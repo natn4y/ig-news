@@ -1,4 +1,5 @@
 import { GetStaticProps } from "next";
+import Link from "next/link";
 import * as RichText from "@prismicio/richtext";
 
 import Head from "next/head";
@@ -20,25 +21,27 @@ export default function Posts({ posts }: PostsProps) {
   return (
     <>
       <Head>
-        <title>Posts | Ignews</title>
+        <title>Posts | ig.news</title>
       </Head>
 
       <main className={styles.container}>
         <div className={styles.posts}>
           {posts.map((post) => (
-            <a key={post.slug} href="">
-              <time>{post.updatedAt}</time>
-              <strong>{post.title}</strong>
-              <p>{post.excerpt}</p>
-            </a>
+            <Link key={post.slug} href={`/posts/${post.slug}`}>
+              <a>
+                <time>{post.updatedAt}</time>
+                <strong>{post.title}</strong>
+                <p>{post.excerpt}</p>
+              </a>
+            </Link>
           ))}
         </div>
       </main>
     </>
   );
 }
-export const getStaticProps: GetStaticProps = async () => {
-  const prismic = getPrismicClient();
+export const getStaticProps: GetStaticProps = async (req) => {
+  const prismic = getPrismicClient(req);
 
   const response = await prismic.getAllByType("posts", {
     fetch: ["post.title", "post.content"],
