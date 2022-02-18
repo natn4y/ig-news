@@ -3,7 +3,6 @@ import GithubProvider from "next-auth/providers/github";
 
 import { query as q } from "faunadb";
 import { fauna } from "../../../services/fauna";
-import { useRouter } from "next/router";
 
 export default NextAuth({
   providers: [
@@ -69,6 +68,10 @@ export default NextAuth({
       } catch {
         return false;
       }
+    },
+    redirect({ url }) {
+      if (url.startsWith("/")) return "/posts";
+      else return "/";
     },
   },
 });
