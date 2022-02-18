@@ -3,6 +3,7 @@ import { FiX } from "react-icons/fi";
 import { signIn, signOut, useSession } from "next-auth/react";
 
 import styles from "./styles.module.scss";
+import { useRouter } from "next/router";
 
 export function SignInButton() {
   const { data: session } = useSession();
@@ -21,7 +22,7 @@ export function SignInButton() {
     <button
       type="button"
       className={styles.signInButton}
-      onClick={() => signIn("github")}
+      onClick={() => signIn("github", { callbackUrl: `/posts` })}
     >
       <FaGithub color="#eba417" />
       Sign in with Github
