@@ -7,11 +7,9 @@ import styles from "./home.module.scss";
 
 interface HomeProps {
   subscription: {
-    product: {
-      name: string;
-    };
+    name: string;
     priceId: string;
-    amount: number;
+    amount: string;
   };
 }
 
@@ -40,19 +38,15 @@ export default function Home({ subscription }: HomeProps) {
   );
 }
 export const getStaticProps: GetStaticProps = async () => {
-  const product_subscription = await stripe.prices.retrieve(
-    "price_1KSm0vHowNYbIhfmOCcQUKQ6",
-    {
-      expand: ["product"],
-    }
-  );
+  const product_subscription = await stripe.prices.retrieve("price_1KSm0vHowNYbIhfmOCcQUKQ6", {
+    expand: ["product"],
+  });
 
   const subscription = {
-    product: product_subscription.product,
     priceId: product_subscription.id,
     amount: new Intl.NumberFormat("en-US", {
       style: "currency",
-      currency: "USD",
+      currency: "BRL",
     }).format(product_subscription.unit_amount / 100),
   };
 
